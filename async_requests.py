@@ -11,6 +11,17 @@ load_dotenv()
 
 MAX_REQUESTS = 5
 
+# Получаем переменные окружения
+user = os.getenv('POSTGRES_USER')
+password = os.getenv('POSTGRES_PASSWORD')
+db = os.getenv('POSTGRES_DB')
+host = 'localhost'
+port = '5432'
+
+DATABASE_URL = f"postgresql+asyncpg://{user}:{password}@{host}:{port}/{db}"
+
+engine = create_async_engine(DATABASE_URL)
+
 async def get_people(person_id, session):
     # Получаем данные о персонаже по ID
     async with (session.get(f'https://www.swapi.tech/api/people/{person_id}/')
@@ -43,15 +54,6 @@ async def save_character(character, character_table):
 
 
 async def main():
-    # Основная функция для запуска приложения
-    user = os.getenv('POSTGRES_USER')
-    password = os.getenv('POSTGRES_PASSWORD')
-    db = os.getenv('POSTGRES_DB')
-    host = 'localhost'
-    port = '8888'
-    # Формируем строку подключения к базе данных
-    DATABASE_URL = f"postgresql+asyncpg://{user}:{password}@{host}:{port}/{db}"
-
     # Отражаем структуру таблицы из базы данных
     metadata = MetaData()
     character_table = Table('characters', metadata, autoload_with=engine)

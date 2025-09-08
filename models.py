@@ -1,8 +1,8 @@
 import os
 
-from sqlalchemy import JSON, Integer, String
+from sqlalchemy import Integer, String
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase, MappedColumn, mapped_column, Mapped
+from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
 
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "12345")
 POSTGRES_USER = os.getenv("POSTGRES_USER", "swapi")

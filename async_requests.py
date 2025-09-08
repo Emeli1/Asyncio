@@ -37,7 +37,7 @@ async def main():
         # Разбиваем список ID на чанки для параллельных запросов
         for chunk in chunked(range(1, 101), MAX_REQUESTS):
             coros = [get_people(person_id, session) for person_id in chunk]
-            result = await asyncio.gather(*coros)
+            results = await asyncio.gather(*coros)
             insert_task = asyncio.create_task(insert_results(results))
         tasks = asyncio.all_tasks()
         current_task = asyncio.current_task()

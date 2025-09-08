@@ -1,7 +1,7 @@
 import asyncio
 import aiohttp
 from more_itertools import chunked
-from models import DbSession, Character, init_orm
+from models import DbSession, Character, init_orm, close_orm
 
 MAX_REQUESTS = 5
 
@@ -30,6 +30,7 @@ async def insert_results(characters_list: list[dict]):
         await session.commit
 
 async def main():
+    await asyncio.sleep(5)
     await init_orm()
     # Создаем асинхронную сессию для запросов к API
     async with aiohttp.ClientSession() as session:
@@ -43,7 +44,8 @@ async def main():
         tasks.remove(current_task)
         for task in tasks:
             await task
+        await close_orm()
 
 
-if __name__ == '__main__':
-    asyncio.run(main())
+main_coro = main()
+asyncio.run(main_coro)
